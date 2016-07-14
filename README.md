@@ -14,8 +14,7 @@ news article classification and recommend article using comments
 
 ### recomend news article
 - https://github.com/radajin/naver_news/blob/master/recomend_article.ipynb
-- Using TfidfVectorizer and Euclid Distance
-- Need to Chage cos Distance
+- Using TfidfVectorizer and Euclid Distance, cos Distance
 
 ### spam filtering
 - https://github.com/radajin/naver_news/blob/master/spam_filtering.ipynb
