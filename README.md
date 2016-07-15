@@ -4,7 +4,7 @@ news article classification and recommend article using comments
 ### crawling naver news articles
 - https://github.com/radajin/naver_news/blob/master/naver_news_crawling.ipynb
 - function : get_monthly_article
-- parameter : (month, startday, enddat)
+- parameter : (month, startday, endday)
 
 ### news classification 
 - https://github.com/radajin/naver_news/blob/master/news_classification.ipynb
