@@ -3,8 +3,7 @@ news article classification and recommend article using comments
 
 ### crawling naver news articles
 - https://github.com/radajin/naver_news/blob/master/naver_news_crawling.ipynb
-- function : get_monthly_article
-- parameter : (month, startday, endday)
+- function : auto_cralwing(download_date)
 
 ### news classification 
 - https://github.com/radajin/naver_news/blob/master/news_classification.ipynb
@@ -13,8 +12,10 @@ news article classification and recommend article using comments
 - max precision : 90% ( the number of training data : 103910 )
 
 ### recomend news article
-- https://github.com/radajin/naver_news/blob/master/recomend_article.ipynb
-- Using TfidfVectorizer and Euclid Distance, cos Distance
+- https://github.com/radajin/naver_news/blob/master/recomend_article_1.ipynb
+- Using TfidfVectorizer and cosin distance
+- https://github.com/radajin/naver_news/blob/master/recomend_article_2.ipynb
+- Using Evalidation MAE(mean absolute error)
 
 ### spam filtering
 - https://github.com/radajin/naver_news/blob/master/spam_filtering.ipynb
