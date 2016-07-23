@@ -12,9 +12,9 @@ news article classification and recommend article using comments
 - max precision : 90% ( the number of training data : 103910 )
 
 ### recomend news article
-- https://github.com/radajin/naver_news/blob/master/recomend_article_1.ipynb
+- https://github.com/radajin/naver_news/blob/master/recommend_article_1.ipynb
 - Using TfidfVectorizer and cosin distance
-- https://github.com/radajin/naver_news/blob/master/recomend_article_2.ipynb
+- https://github.com/radajin/naver_news/blob/master/recommend_article_2.ipynb
 - Using Evalidation MAE(mean absolute error)
 
 ### spam filtering
