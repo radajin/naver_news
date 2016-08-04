@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Naver Article Recommend</title>
+    <link rel="shortcut icon" href="http://cdn.www.fastcampus.co.kr/wp-content/uploads/2016/02/untitled_1_01_wfp_icon.ico"  />
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+
+    <style type="text/css">
+      body{
+        margin-top: 20px;
+      }
+      .loading{
+        width: 34px;
+        height: 34px;
+        display: none;
+      }
+      .alert{
+        margin-top: 10px;
+        display: none;
+      }
+      .form-inline.admin{
+        height: 50px;  
+      }
+      .make-model-btn{
+        vertical-align: bottom;
+      }
+      .recommend-article-area, .comments-area{
+        display: none;
+      }
+    </style>
+
+  </head>
+
+  <body>
+
+    <div class="container" id="classification">
+      
+      <h3>Classification</h3>
+      
+      <hr>
+
+      <div class="input-group">
+        <input type="text" class="form-control sentence" placeholder="Input Text">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-primary classification-btn">Classification</button>
+        </span>
+      </div>
+      
+
+      <p class="classification-result"></p>
+      <br><br>
+    </div>
+    
+    <div class="container" id="recommend">
+      <h3>Article Recommend</h3>
+      <hr>
+      <form class="form-inline admin">      
+        <button type="button" class="btn btn-success make-model-btn">Make Recommend Model</button>
+        <!-- <img class="loading" src="http://i.imgur.com/GTWcpuA.gif"> -->
+      </form>
+
+      <div class="alert alert-success recommend-model-alert" role="alert"> 
+        <p><strong>Success!</strong> You successfully make recommend model.</p>
+        <p>The number of Articles : <span class="article_num"></span></p>
+        <p>The number of users : <span class="user_num"></span></p>
+        <p>The number of comment mean (CM) : <span class="comment_mean"></span></p>
+        <p>Mean Absolute Error (MAE) : <span class="mae"></span></p>
+        <p class="user_list"></p>
+      </div>
+      <br>
+      <form class="recommend">
+        <div class="input-group">
+          <input type="text" class="form-control userId" placeholder="User Id" value="">
+          <span class="input-group-btn">
+            <button class="btn btn-primary recommend-btn" type="button">Recommend</button>
+          </span>
+        </div>
+
+      </form>
+      <hr>
+
+      <div class="comments-area">
+        <h4>Written Comments</h4>
+        <div class="comments-list"></div>
+        <hr>
+      </div>
+      <br>
+      <div class="recommend-article-area">
+        <h4>Recommend Articles</h4>
+        <hr>
+        <table class="table table-hover"> 
+          <thead> 
+            <tr> 
+              <th>#</th> 
+              <th>newspaper</th> 
+              <th style="width:150px">title</th> 
+              <th>contents</th> 
+            </tr> 
+          </thead> 
+          <tbody class="recommend-articles"> </tbody> 
+        </table>
+      </div>
+
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script>
+
+      function make_recommend_article_tag(data){
+        var tag = ""
+        for(var i=0; i<data.length; i++){
+          tag += "<tr>"
+          tag += "<td>" + (i+1) + "</td>"
+          tag += "<td>" + data[i].newspaper + "</td>"
+          tag += "<td><a href=" + data[i].link + " target='_blank'>" + data[i].title + "</a></td>"
+          tag += "<td>" + data[i].content.substring(0,200) + "...</td>"
+          tag += "</tr>"
+        }
+            
+        return tag
+      }
+        
+      $(document).ready(function(){
+
+        // make recommend model
+        $(".make-model-btn").click(function(){
+          // $('.loading').show()
+          $.getJSON("/api/makeRecommendModel", function(result){
+            console.log(result)
+            $(".article_num").text(result.article_list)
+            $(".user_num").text(result.unique_user)
+            $(".comment_mean").text(result.comment_mean.toFixed(2))
+            $(".mae").text(result.mae.toFixed(2))
+            $('.recommend-model-alert').slideDown()
+
+            var tag = "<span>User List : </span>"
+            for(var i=0;i<result.user_list.length;i++){
+              tag += "<span>"
+              tag += result.user_list[i]
+              tag += ", </span>"
+            }
+            $('.user_list').append(tag)
+
+            // $('.loading').hide()
+          })
+
+        })
+
+        // recommend button
+        $(".recommend-btn").click(function(){
+
+          userId = $(".userId").val()
+          params = {"userId" : userId}
+
+          $.getJSON("/api/recommend?" + $.param(params), function(result){
+            
+            console.log(result)
+
+            // append written comemnts
+            tag = ""
+            for(var i=0; i<result.comments.length ;i++){
+              tag += "<p>" + result.comments[i] + "</p>"
+            }
+            $('.comments-list').empty().append(tag)
+            $(".comments-area").show()
+
+            // append recommend articles
+            tag = make_recommend_article_tag(result.recommend_article_list)
+            $(".recommend-articles").empty().append(tag)
+            $(".recommend-article-area").show()
+
+          })        
+        })
+
+        // classification button
+        $(".classification-btn").click(function(){
+          
+          sentence = $(".sentence").val()
+          params = {"sentence" : encodeURIComponent(sentence)}
+
+          $.getJSON("/api/classification?" + $.param(params), function(result){
+            
+            console.log(params)
+
+          })
+
+
+        })
+        
+
+      })
+
+
+    </script>
+  </body>
+</html>
+
+
+
+
